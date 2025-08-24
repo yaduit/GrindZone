@@ -46,7 +46,7 @@ export const WORKOUTS = {
 //make it so that you can't get the same varient in a single workout (maybe)
 //add all the other variants to the subsubstitute list
 //pick a random exercise
-//for non-members, exclude all the at home specific exercises (anything particularly pussy like a lot of the bodyweight stuff)
+//for non-members, exclude all the at home specific exercises (anything particularly like a lot of the bodyweight stuff)
 
 const bw_exercises = {
 
