@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import SectionWrapper from './sectionWrapper'
 import { SCHEMES, WORKOUTS } from '../utils/exercise'
+import Buttons from './Buttons'
 
 
 function Header(props){
@@ -22,14 +23,34 @@ function Header(props){
 export default function Generator() {
 
   const[showModal, setShowModal] = useState(false);
-  const[poison , setPoison] = useState('individua');
+  const[poison , setPoison] = useState('individual');
   const[muscles, setMuscles] = useState([]);
-  const[goals , setGoals] = useState('strength_power');
+  const[goal , setGoal] = useState('strength_power');
 
 //  let showModal = false
 
  function toggleModal(){
   setShowModal(!showModal)
+ }
+
+
+ function updateMuscles(muscleGroup){
+   if(muscles.includes(muscleGroup)){
+     setMuscles(muscles.filter((muscle)=> muscle !== muscleGroup))
+     return
+   }
+    if(muscles.length > 2 ){
+      return
+    }
+    if(poison !== 'individual'){
+      setMuscles([muscleGroup])
+      setShowModal(false);
+      return
+    }
+    setMuscles([...muscles, muscleGroup])
+    if(muscles.length === 2){
+      setShowModal(false);
+    }
  }
 
   return (
@@ -40,7 +61,10 @@ export default function Generator() {
       <div className='grid grid-cols-2 sm:grid-cols-4 gap-4'>
         {Object.keys(WORKOUTS).map((type,typeIndex)=>{
           return(
-            <button className='bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600  py-4 rounded-lg' key={typeIndex}>
+            <button onClick={()=>{
+              setMuscles([]);
+              setPoison(type)
+            }} className={'bg-slate-950 border duration-200 px-4 hover:border-blue-600 py-3 rounded-lg ' + (type === poison ? 'border-blue-600' : 'border-blue-400') } key={typeIndex}>
               <p className='capitalize'>{type.replaceAll('_'," ")}</p>
             </button>
           )
@@ -52,12 +76,24 @@ export default function Generator() {
 
       <div className='bg-slate-950  border border-solid border-blue-400 rounded-lg flex flex-col'>
         <button onClick={toggleModal} className='relative p-3 flex justify-center items-center'>
-          <p>Select muscle groups</p>
+          <p className='capitalize'>{muscles.length === 0 ? 'Select muscle groups' : muscles.join(' ')}</p>
           <i className="absolute right-3 top-1/2 -translate-y-1/2 fa-solid fa-caret-down"></i>
         </button>
 
         {showModal && (
-          <div>modal</div>
+          <div className='flex flex-col'>
+            {(poison === 'individual' ? WORKOUTS[poison] : Object.keys(WORKOUTS[poison])).map((muscleGroup, muscleGroupIndex)=>{
+              return(
+                <button onClick={()=>{
+                  updateMuscles(muscleGroup)
+
+                }} key={muscleGroupIndex}className={'hover:text-blue-400 duration-200'+(muscles.includes(muscleGroup) ? ' text-blue-400' : ' ') }>
+                  <p className='uppercase'>{muscleGroup.replaceAll('_','')}</p>
+                </button>
+              )
+            })}
+
+          </div>
         )}
 
         
@@ -70,14 +106,19 @@ export default function Generator() {
       <div className='grid grid-cols-3 gap-4'>
         {Object.keys(SCHEMES).map((scheme,schemeIndex)=>{
           return(
-            <button className='bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600  py-4 rounded-lg' key={schemeIndex}>
+         <button onClick={()=>{
+              setGoal(scheme)
+            }} className={'bg-slate-950 border duration-200 hover:border-blue-600 py-3 rounded-lg px-4 ' + (scheme === goal ? 'border-blue-600' : 'border-blue-400') } key={schemeIndex}>
               <p className='capitalize'>{scheme.replaceAll('_'," ")}</p>
             </button>
           )
         })}
       </div>
+
+      <Buttons text={"Formulate"}></Buttons>
        
     </SectionWrapper>
+
 
    
   )
