@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import SectionWrapper from './sectionWrapper'
+import SectionWrapper from './SectionWrapper'
 import { SCHEMES, WORKOUTS } from '../utils/exercise'
 import Buttons from './Buttons'
+
 
 
 function Header(props){
@@ -20,12 +21,11 @@ function Header(props){
 
 
 
-export default function Generator() {
+export default function Generator(props) {
+
+  const{poison, setPoison, muscles, setMuscles, goal, setGoal, updateWorkout} = props
 
   const[showModal, setShowModal] = useState(false);
-  const[poison , setPoison] = useState('individual');
-  const[muscles, setMuscles] = useState([]);
-  const[goal , setGoal] = useState('strength_power');
 
 //  let showModal = false
 
@@ -54,7 +54,7 @@ export default function Generator() {
  }
 
   return (
-    <SectionWrapper header={"generate your workout"} title={['it\'s','grind','o\'clock']}>
+    <SectionWrapper id={'generate'} header={"generate your workout"} title={['it\'s','grind','o\'clock']}>
 
       <Header index={'01'} title={'pick your poison'} description={'select the workout you wish to endure'}/>
 
@@ -103,7 +103,7 @@ export default function Generator() {
 
       <Header index={'03'} title={'Become juggernaut'} description={'Select your ultimate objective.'}/>
 
-      <div className='grid grid-cols-3 gap-4'>
+      <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
         {Object.keys(SCHEMES).map((scheme,schemeIndex)=>{
           return(
          <button onClick={()=>{
@@ -115,7 +115,9 @@ export default function Generator() {
         })}
       </div>
 
-      <Buttons text={"Formulate"}></Buttons>
+
+
+      <Buttons func={updateWorkout} text={"Formulate"}></Buttons>
        
     </SectionWrapper>
 

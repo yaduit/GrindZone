@@ -12,7 +12,9 @@ export default function Hero() {
         </div>
         <p className='text-sm md:text-base font-light py-3 sm:text-lg leading leading-relaxed'>Your journey to strength, confidence, and discipline starts here.Track your progress, follow expert routines, and stay motivated—because your best self is waiting to be unlocked.</p>
         
-        <Buttons  text={"Accept & Begin"}></Buttons>
+        <Buttons func={()=>{
+          window.location.href='#generate'
+        }} text={"Accept & Begin"}></Buttons>
 
       
     </div>
